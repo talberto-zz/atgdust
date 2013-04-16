@@ -1,0 +1,328 @@
+Using AtgDustCase
+  
+  This part of the tutorial explains the usage of AtgDustCase, a base class 
+  comparable to Junit's TestCase. and the succesor of AtgDustTestCase. Extending AtgDustCase
+  will provide you with the following functionality:
+  
+  * Support for Gsa repository based tests
+ 
+  * Support for testing Nucleus components
+  
+  * Basic support for testing FormHandlers and Droplets
+  
+  * Write tests that make use of existing component property/repository definition
+  files (which can be located anywhere on the file system)
+  
+ 
+(Almost) Copy and Pasteable test examples
+
+  The following examples will hopefully illustrate the usage of AtgDustCase by:
+  
+  [[1]] testing Nucleus based components
+  
+  [[2]] preparing a FormHandler test
+  
+  [[3]] explaining a Gsa repository based test
+ 
+* Testing Nucleus based components
+
+  In this example we'll prepare and test a basic nucleus component. 
+
++------------------------------------------+
+package com.some.company;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import atg.nucleus.logging.ClassLoggingFactoryImpl;
+import atg.test.AtgDustCase;
+
+import com.bol.wsp.internal.version.ScmParser.ScmType;
+
+public class ScmInfoTest extends AtgDustCase {
+
+  private ScmParser scmInfo;
+
+  protected final Log log = LogFactory.getLog(ScmInfoTest.class);
+
+  protected void setUp() throws Exception {
+    super.setUp();
+
+    copyConfigurationFiles(new String[]{"config"}, "target/test-classes/config",
+        ".svn", "CVS");
+
+    createPropertyFile("target/test-classes/config",
+        "/atg/dynamo/service/logging/ClassLoggingFactory",
+        ClassLoggingFactoryImpl.class);
+
+    scmInfo = (ScmParser) resolveNucleusComponent("/com/bol/wsp/internal/ScmInfo");
+
+  }
+
+  protected void tearDown() throws Exception {
+    super.tearDown();
+  }
+
+  public void testVersionOutput() {
+
+    assertEquals("http://localhost/svn/repository/webshop/trunk/application",
+        scmInfo.getUrl());
+    assertEquals("2007-10-08 11:19:32 +0200 (Mon, 08 Oct 2007)", scmInfo
+        .getLastChangedDate());
+    assertEquals("1909", scmInfo.getRevision());
+
+    assertEquals(ScmType.SUBVERSION.toString(), scmInfo.getType());
+  }
+
+}
+
++------------------------------------------+
+
+* Preparing a FormHandler test
+
+  Example code to illustrate how to set up a FormHandler test.
+
++------------------------------------------+
+package forms.review;
+
+import java.io.File;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import atg.adapter.gsa.GSARepository;
+import atg.nucleus.ServiceException;
+import atg.test.AtgDustCase;
+
+public class ReviewFormHandlerTest extends AtgDustCase {
+
+  private final Log log = LogFactory.getLog(getClass());
+
+  private ReviewFormHandler reviewFormHandler;
+
+  /*
+   * @see TestCase#setUp()
+   */
+  protected void setUp() throws Exception {
+    super.setUp();
+
+    copyConfigurationFiles(new String[] { "config" }, "target/config".replace(
+        "/", File.separator), new String[] { ".svn" });
+
+    prepareRepositoryTest(
+			new String[] { "com/bol/review/CustomerReviewRepository.xml" },
+      "/com/bol/review/CustomerReviewRepository");
+
+    reviewFormHandler = (ReviewFormHandler) resolveNucleusComponent("/com/bol/forms/ReviewFormHandler");
+
+    reviewFormHandler.setFormName("ReviewFormHandler");
+
+    GSARepository customerReviewRepository = (GSARepository) resolveNucleusComponent("/com/bol/review/CustomerReviewRepository");
+    reviewFormHandler.setRepository(customerReviewRepository);
+
+  }
+
+  public void testDoStartService() {
+
+    assertNotNull(reviewFormHandler);
+
+    try {
+      reviewFormHandler.doStartService();
+    }
+    catch (ServiceException e) {
+      log.error("Error: ", e);
+      fail();
+    }
+    
+    // more asserts here to follow
+
+  }
+
+}
+
++------------------------------------------+
+
+* A Gsa repository based test
+
+  This test will run against an in-memory HSQL database and against an existing mysql database.
+  We'll assume that all needed resource like config files and repository 
+  definition files are located in src/test/resources/config. This example is 
+  located in <<src/test/java/test/SongRepositoryTest.java>>.
+
++------------------------------------------+
+package test;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import atg.adapter.gsa.GSARepository;
+import atg.dtm.TransactionDemarcation;
+import atg.dtm.TransactionDemarcationException;
+import atg.repository.MutableRepositoryItem;
+import atg.repository.RepositoryException;
+import atg.repository.RepositoryItem;
+import atg.test.AtgDustCase;
+
+/**
+ * 
+ * Example test case to illustrate the usage of AtgDustTestCase built-in
+ * database functionalities. Before running this test from your ide do a mvn
+ * resources:testResources to copy all needed file to the expected locations.
+ * 
+ * 
+ * @author robert
+ * 
+ */
+public class SongRepositoryNewTest extends AtgDustCase {
+
+  private static final Log log = LogFactory.getLog(SongRepositoryNewTest.class);
+
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+
+    // make sure all needed files are at the config location.
+    // "target/test-classes/config" is then prompoted to the configuration
+    // directory.
+    copyConfigurationFiles(new String[] { "src/test/resources/config".replace(
+        "/", File.separator) }, "target/test-classes/config".replace("/",
+        File.separator), new String[] { ".svn" });
+
+  }
+
+  @Override
+  public void tearDown() throws Exception {
+    super.tearDown();
+  }
+
+  /**
+   * Runs a test against an in-memory HSQL database
+   * 
+   * @throws Exception
+   */
+  public void testWithInMemoryDb() throws Exception {
+
+    // The actual test is quite generic. The only difference is the way the
+    // repository is prepared by the prepareRepositoryTest method
+
+    prepareRepositoryTest(new String[] { "/GettingStarted/songs.xml" },
+        "/GettingStarted/SongsRepository");
+
+    songsRepositoryTest();
+  }
+
+  /**
+   * Example test with existing Database. This test is disabled by default (set
+   * to false/or not set in the env.properties) because the MySQL JDBC drivers
+   * (and the env.properties is configured to use mysql) are not included in the
+   * atg dust package.
+   * 
+   * To make use of this test, install a mysql-connector-java (mysql jdbc
+   * driver) into your .m2/repository, un-comment the mysql dependency in the
+   * pom.xml. Test data can be found in
+   * src/test/resources/config/GettingStarted/songs-data.xml.
+   * 
+   * 
+   * @throws Exception
+   */
+  public void testWithExistingDb() throws Exception {
+
+    Properties properties = new Properties();
+    properties.load(new FileInputStream("src/test/resources/env.properties"));
+
+    // a mechanism to disbale/enable the repository test against an existing
+    // database
+    if (properties.getProperty("enabled") == null
+        || properties.getProperty("enabled").equalsIgnoreCase("false")) {
+      return;
+    }
+
+    // The actual test is quite generic. The only difference is the way the
+    // repository is prepared by the prepareRepositoryTest method
+
+    prepareRepositoryTest(new String[] { "/GettingStarted/songs.xml" },
+        "/GettingStarted/SongsRepository", properties, false);
+
+    songsRepositoryTest();
+  }
+
+  private void songsRepositoryTest() throws TransactionDemarcationException,
+      RepositoryException, IOException {
+    GSARepository songsRepository = (GSARepository) resolveNucleusComponent("/GettingStarted/SongsRepository");
+    assertNotNull(songsRepository);
+
+    final TransactionDemarcation td = new TransactionDemarcation();
+    assertNotNull(td);
+
+    try {
+      // Start a new transaction
+      td.begin(songsRepository.getTransactionManager());
+      // Create a new artist
+      MutableRepositoryItem artist = songsRepository.createItem("artist");
+      artist.setPropertyValue("name", "joe");
+      // Persist to the repository
+      songsRepository.addItem(artist);
+      // Try to get it back from the repository
+      String id = artist.getRepositoryId();
+      RepositoryItem retrievedArtist = songsRepository.getItem(id, "artist");
+
+      assertEquals(artist, retrievedArtist);
+    }
+    finally {
+      // End the transaction, roll-back to restore original database state
+      td.end(true);
+    }
+  }
+
+}
+
+
+The env.properties used in the testWithExistingDb() method above looks like this:
+
+# Configure for your mysql database. These properties are read by
+# the test currently disabled in the SongsRepositoryTest.
+URL=jdbc:mysql://localhost:3306/bwsp
+driver=com.mysql.jdbc.Driver
+user=bol-wsp
+password=
+
+
+# If you set this to true then also make sure that you have a 
+# mysql jdbc driver. See comments in pom.xml (search for mysql)
+
+enabled=true
+
+
++------------------------------------------+
+
+Tips and Troubleshooting
+
+* Error during startup of repository test, because of missing transaction manager
+
++------------------------------------------+
+ createPropertyFile("/atg/dynamo/transaction/TransactionManager",
+  atg.dtm.TransactionManagerImpl.class);
++------------------------------------------+
+
+* Inject ApplicationLoggingImpl to prevent NPE's for components using ApplicationLogging
+
++------------------------------------------+
+  createPropertyFile("/atg/dynamo/service/logging/ClassLoggingFactory", ClassLoggingFactoryImpl.class);
++------------------------------------------+
+
+* Restoring the state of the database when connecting to an existing one
+
+  Wrap your test code in an transaction (see: SongRepositoryTest:songsRepositoryTest) 
+  and then do:
+
++------------------------------------------+
+   // End the transaction, roll-back to restore original database state
+   td.end(true);
++------------------------------------------+
+
+ {{{http://bsdroot.com}Bsdroot.com}}
