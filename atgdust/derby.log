@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-2013-04-16 06:13:19.380 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.4.2.0 - (689064): instance a816c00e-013e-1179-dce8-0000001c0e28
-on database directory D:\opensource\atgdust\testdb  
+2013-06-06 02:46:39.279 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.4.2.0 - (689064): instance a816c00e-013f-1760-facb-000007de5148
+on database directory D:\workspace\atgdust10.2\atgdust\testdb  
 
 Database Class Loader started - derby.database.classpath=''
 
-2013-04-16 06:13:27.871 GMT:
-Shutting down instance a816c00e-013e-1179-dce8-0000001c0e28
+2013-06-06 02:46:44.243 GMT:
+Shutting down instance a816c00e-013f-1760-facb-000007de5148
 ----------------------------------------------------------------

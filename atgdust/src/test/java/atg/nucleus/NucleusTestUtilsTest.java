@@ -50,11 +50,7 @@ public class NucleusTestUtilsTest extends TestCase {
   public static void testAddComponent() throws Exception {
     Nucleus n = null;
     try {
-      try {
-        n = new Nucleus(null);
-      } catch (Exception licExc) {
-        ;
-      }
+       n = new Nucleus("");
       Object component = new String("I'm the test component");
       String path = "/foo/Test";
       Object component2 = new String("I'm the test component too");

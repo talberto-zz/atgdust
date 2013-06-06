@@ -59,6 +59,7 @@ import atg.nucleus.naming.ParameterName;
 import atg.security.UserAuthenticator;
 import atg.server.http.TestingHttpConnectionServletInputStream;
 import atg.servlet.exittracking.ExitTrackingHandler;
+import atg.servlet.jsp.WebPools;
 import atg.servlet.minimal.WebApplicationInterface;
 import atg.servlet.sessiontracking.GenericHttpSession;
 import atg.service.dynamo.AppServerConfig;
@@ -2400,7 +2401,7 @@ public class ServletTestUtils {
      * @see atg.servlet.DynamoHttpServletRequest#getWebPools()
      */
     public WebPools getWebPools() {
-      return mRequest.getWebPools();
+      return ((TestingDynamoHttpServletRequest) mRequest).getWebPools();
     }
 
     /**
@@ -3527,7 +3528,7 @@ public class ServletTestUtils {
      * @see atg.servlet.DynamoHttpServletRequest#setWebPools(atg.servlet.WebPools)
      */
     public void setWebPools(WebPools pWebPools) {
-      mRequest.setWebPools(pWebPools);
+      ((TestingDynamoHttpServletRequest) mRequest).setWebPools(pWebPools);
     }
 
     /**

@@ -49,7 +49,7 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
-<!--
+
   <repositories>
     <repository>
       <id>atgdust.sourceforge.net</id>
@@ -62,7 +62,7 @@
       </releases>
       </repository>
   </repositories>
--->
+
 
   <licenses>
     <license>
@@ -160,70 +160,70 @@
       NOTE: You must import DAS/classes.jar from an ATG installation
       into your maven repository to satify this dependency. For example:
       mvn install:install-file -DgroupId=atg -DartifactId=das
-      -Dversion=10.0.2 -Dpackaging=jar
-      -Dfile=c:\ATG\ATG10.0.2\DAS\lib\classes.jar -DgeneratePom=true
+      -Dversion=9.1 -Dpackaging=jar
+      -Dfile=c:\ATG\ATG9.1\DAS\lib\classes.jar -DgeneratePom=true
       See: src/main/bin/install.bats/sh for a script to do this for you
     -->
     <dependency>
       <groupId>atg</groupId>
-      <artifactId>das</artifactId>
-      <version>10.0.2</version>
+      <artifactId>DAS</artifactId>
+      <version>10.2</version>
       <scope>provided</scope>
     </dependency>
     <!--
       NOTE: You must import DAS/resources.jar from an ATG installation
       into your maven repository to satisfy this dependency. For
       example: mvn install:install-file -DgroupId=atg
-      -DartifactId=das-resources -Dversion=10.0.2 -Dpackaging=jar
-      -Dfile=c:\ATG\ATG10.0.2\DAS\lib\resources.jar -DgeneratePom=true
+      -DartifactId=das-resources -Dversion=9.1 -Dpackaging=jar
+      -Dfile=c:\ATG\ATG9.1\DAS\lib\resources.jar -DgeneratePom=true
     -->
     <dependency>
       <groupId>atg</groupId>
-      <artifactId>das-resources</artifactId>
-      <version>10.0.2</version>
+      <artifactId>Das-resources</artifactId>
+      <version>10.2</version>
       <scope>provided</scope>
     </dependency>
     <!--
       NOTE: You must import DPS/classes.jar from an ATG installation
       into your maven repository to satify this dependency. For example:
       mvn install:install-file -DgroupId=atg -DartifactId=dps
-      -Dversion=10.0.2 -Dpackaging=jar
-      -Dfile=c:\ATG\ATG10.0.2\DPS\lib\classes.jar -DgeneratePom=true
+      -Dversion=9.1 -Dpackaging=jar
+      -Dfile=c:\ATG\ATG9.1\DPS\lib\classes.jar -DgeneratePom=true
       See: src/main/bin/install.bat for a windows batch script to do this for you
     -->
     <dependency>
       <groupId>atg</groupId>
-      <artifactId>dps</artifactId>
-      <version>10.0.2</version>
+      <artifactId>DPS</artifactId>
+      <version>10.2</version>
       <scope>provided</scope>
     </dependency>
     
     <dependency>
       <groupId>atg</groupId>
-      <artifactId>dps-resources</artifactId>
-      <version>10.0.2</version>
+      <artifactId>DPS-resources</artifactId>
+      <version>10.2</version>
       <scope>provided</scope>
     </dependency>
     <!--
       NOTE: You must import DSS/classes.jar from an ATG installation
       into your maven repository to satify this dependency. For example:
       mvn install:install-file -DgroupId=atg -DartifactId=dss
-      -Dversion=10.0.2 -Dpackaging=jar
-      -Dfile=c:\ATG\ATG10.0.2\DSS\lib\classes.jar -DgeneratePom=true
+      -Dversion=9.1 -Dpackaging=jar
+      -Dfile=c:\ATG\ATG9.1\DSS\lib\classes.jar -DgeneratePom=true
       See: src/main/bin/install.bat for a windows batch script to do this for you
     -->
 
     <dependency>
       <groupId>atg</groupId>
-      <artifactId>dss</artifactId>
-      <version>10.0.2</version>
+      <artifactId>DSS</artifactId>
+      <version>10.2</version>
       <scope>provided</scope>
     </dependency>
     
     <dependency>
       <groupId>atg</groupId>
-      <artifactId>dss-resources</artifactId>
-      <version>10.0.2</version>
+      <artifactId>DSS-resources</artifactId>
+      <version>10.2</version>
       <scope>provided</scope>
     </dependency>
 
@@ -295,6 +295,16 @@
       <artifactId>parallelization-util</artifactId>
       <version>1.0-SNAPSHOT</version> </dependency>
     -->
+    <dependency>
+    	<groupId>javax.validation</groupId>
+    	<artifactId>validation-api</artifactId>
+    	<version>1.1.0.Final</version>
+    </dependency>
+    <dependency>
+    	<groupId>cglib</groupId>
+    	<artifactId>cglib</artifactId>
+    	<version>3.0</version>
+    </dependency>
   </dependencies>
   <reporting>
     <plugins>

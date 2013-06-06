@@ -776,7 +776,6 @@ public class NucleusTestUtils {
       // see....
       dynamoRootStr = 
         CommandProcessor.getProcEnvironmentVar("DYNAMO_ROOT");
-      dynamoRootStr = "D:/atg/glpenv/ATG10.0.2";
     }
 
     if (dynamoRootStr == null) {
