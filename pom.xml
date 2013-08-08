@@ -4,7 +4,7 @@
   <groupId>net.sf.atgdust</groupId>
   <artifactId>atgdust</artifactId>
   <name>ATG DUST</name>
-  <version>1.2.1-alpha</version>
+  <version>1.2.2-alpha</version>
   <description> ATG DUST is a framework for building JUnit tests for
     applications built on the ATG Dynamo platform. This framework allows
     one to quickly write test code that depends up Nucleus or ATG
@@ -17,6 +17,7 @@
     Nucleus. After that, read the other getting started guides to
     describe how to create standalone Junit tests which can startup
     repositories and use the DynamoHttpServletResponse classes. 
+    For only ATG10 and tested.
   </description>
   <url>http://atgdust.sourceforge.net/</url>
   <issueManagement>
@@ -179,7 +180,7 @@
     -->
     <dependency>
       <groupId>atg</groupId>
-      <artifactId>Das-resources</artifactId>
+      <artifactId>DAS-resources</artifactId>
       <version>10.2</version>
       <scope>provided</scope>
     </dependency>
@@ -241,11 +242,6 @@
       <version>1.2.2</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.2</version>
-    </dependency>
-    <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>1.8.0.1</version>
@@ -304,6 +300,11 @@
     	<groupId>cglib</groupId>
     	<artifactId>cglib</artifactId>
     	<version>3.0</version>
+    </dependency>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
     </dependency>
   </dependencies>
   <reporting>
