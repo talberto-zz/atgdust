@@ -19,17 +19,6 @@
     For only ATG10 and tested.
   </description>
   <url>http://atgdust.sourceforge.net/</url>
-  <issueManagement>
-    <system>Issue Tracker</system>
-    <url>http://sourceforge.net/tracker/?group_id=196325</url>
-  </issueManagement>
-
-  <mailingLists>
-    <mailingList>
-      <name>ATG DUST Forums</name>
-      <post>https://sourceforge.net/apps/phpbb/atgdust/</post>
-    </mailingList>
-  </mailingLists>
 
   <developers>
     <developer>
@@ -45,6 +34,15 @@
       <id>rob_ert</id>
       <name>Robert</name>
       <email>rob_ert@users.sourceforge.net</email>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>talberto</id>
+      <name>Tomas Rodriguez</name>
+      <email>rodriguez@progiweb.com</email>
       <roles>
         <role>developer</role>
       </roles>
@@ -74,11 +72,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:https://atgdust.svn.sourceforge.net/svnroot/atgdust</connection>
-    <developerConnection>
-      scm:svn:https://atgdust.svn.sourceforge.net/svnroot/atgdust 
-    </developerConnection>
-    <url>http://atgdust.svn.sourceforge.net/viewvc/atgdust/</url>
+    <connection>scm:git:git@github.com:talberto/atgdust.git</connection>
+    <developerConnection>scm:git:git@github.com:talberto/atgdust.git</developerConnection>
+    <url>git@github.com:talberto/atgdust.git</url>
   </scm>
 
   <properties>
@@ -103,7 +99,7 @@
     <cglib.version>3.0</cglib.version>
     <junit.version>4.11</junit.version>
   </properties>
-  
+
   <build>
     <plugins>
       <plugin>
@@ -134,6 +130,18 @@
         <artifactId>maven-scm-plugin</artifactId>
         <configuration>
           <connectionType>developerConnection</connectionType>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven.release.version}</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <useReleaseProfile>false</useReleaseProfile>
+          <releaseProfiles>release</releaseProfiles>
+          <goals>deploy</goals>
         </configuration>
       </plugin>
     </plugins>
@@ -265,7 +273,7 @@
       <version>${junit.version}</version>
     </dependency>
   </dependencies>
-  
+
   <reporting>
     <plugins>
       <!-- <plugin> <artifactId>maven-clover-plugin</artifactId> <configuration> <jdk>1.5</jdk> </configuration> </plugin> -->
@@ -332,15 +340,72 @@
   </reporting>
 
   <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus snapshot repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
     <repository>
-      <id>atgdust.sourceforge.net</id>
-      <name>ATG DUST SourceForge Maven Repository</name>
-      <url>sftp://adamb06,atgdust@web.sourceforge.net/home/groups/a/at/atgdust/htdocs/repo/m2-repository</url>
+      <id>sonatype-nexus-staging</id>
+      <name>Sonatype Nexus release repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
-    <!-- Remember to do: ssh -t adamb06,atgdust@shell.sourceforge.net create before a "mvn site-deploy" -->
-    <site>
-      <id>atgdust.sourceforge.net</id>
-      <url>scp://shell.sourceforge.net/home/groups/a/at/atgdust/htdocs</url>
-    </site>
   </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
