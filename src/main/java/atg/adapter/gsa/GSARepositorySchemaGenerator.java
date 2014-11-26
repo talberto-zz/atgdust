@@ -403,7 +403,7 @@ public class GSARepositorySchemaGenerator {
       throws DatabaseOperationException, SQLException {
     boolean success = new DoInAutoCommit(this, mRepository)
         .doInAutoCommit(new AutoCommitable() {
-          @Override
+
           public void doInAutoCommit(Connection pConnection) {
             mPlatform.createTables(pConnection, mDatabase, pDrop,
                 pContinueOnError);
@@ -427,7 +427,7 @@ public class GSARepositorySchemaGenerator {
       throws DatabaseOperationException, SQLException {
     boolean success = new DoInAutoCommit(this, mRepository)
         .doInAutoCommit(new AutoCommitable() {
-          @Override
+
           public void doInAutoCommit(Connection pConnection) {
             mPlatform.dropTables(pConnection, mDatabase, pContinueOnError);
           }
@@ -453,7 +453,7 @@ public class GSARepositorySchemaGenerator {
         pContinueOnError);
     boolean success = new DoInAutoCommit(this, mRepository)
         .doInAutoCommit(new AutoCommitable() {
-          @Override
+
           public void doInAutoCommit(Connection pConnection) {
             mPlatform.alterTables(pConnection, mDatabase, pContinueOnError);
           }
