@@ -17,3 +17,6 @@ maven-eclipse.xml
 .idea
 # test folders
 rebel.xml
+bin
+derby.log
+testdb

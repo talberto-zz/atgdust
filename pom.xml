@@ -3,7 +3,7 @@
   <groupId>com.github.talberto</groupId>
   <artifactId>atgdust</artifactId>
   <name>ATG DUST</name>
-  <version>2.1.0</version>
+  <version>2.1.0-SNAPSHOT</version>
   <description> ATG DUST is a framework for building JUnit tests for
     applications built on the ATG Dynamo platform. This framework allows
     one to quickly write test code that depends up Nucleus or ATG
@@ -18,7 +18,7 @@
     repositories and use the DynamoHttpServletResponse classes. 
     For only ATG10 and tested.
   </description>
-  <url>http://atgdust.sourceforge.net/</url>
+  <url>https://github.com/talberto/atgdust</url>
 
   <developers>
     <developer>
@@ -50,19 +50,6 @@
     </developer>
   </developers>
 
-  <repositories>
-    <repository>
-      <id>atgdust.sourceforge.net</id>
-      <url>http://atgdust.sourceforge.net/repo/m2-repository</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-  </repositories>
-
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -82,10 +69,22 @@
     <maven.release.version>2.5</maven.release.version>
     <maven.surefire.version>2.17</maven.surefire.version>
     <maven.failsafe.version>2.17</maven.failsafe.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.clean.version>2.6.1</maven.clean.version>
+    <maven.scm.version>1.9.2</maven.scm.version>
+    <maven.emma.version>1.2</maven.emma.version>
+    <maven.surefire-report.version>2.0-beta-1</maven.surefire-report.version>
+    <maven.javadoc.version>2.10.1</maven.javadoc.version>
+    <maven.jxr.version>2.0-beta-1</maven.jxr.version>
+    <maven.taglist.version>2.4</maven.taglist.version>
+    <maven.pmd.version>3.3</maven.pmd.version>
+    <maven.findbugs.version>3.0.0</maven.findbugs.version>
+    <maven.changelog.version>2.0-beta-1</maven.changelog.version>
+    <maven.gpg.plugin>1.5</maven.gpg.plugin>
+    <maven.source.plugin>2.2.1</maven.source.plugin>
     <maven.compiler.source>1.7</maven.compiler.source>                                 <!-- the language level for the source files -->
     <maven.compiler.target>1.7</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <atg.version>11.1</atg.version>
     <log4j.version>1.2.14</log4j.version>
     <commons-dbcp.version>1.2.2</commons-dbcp.version>
@@ -105,14 +104,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.version}</version>
         <configuration>
           <forkMode>pertest</forkMode>
-          <!-- <argLine>${maven.test.jvmargs}</argLine> -->
+          <argLine>-Duser.language=en -Duser.locale=US</argLine>
         </configuration>
       </plugin>
 
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven.clean.version}</version>
         <configuration>
           <filesets>
             <fileset>
@@ -128,6 +129,7 @@
 
       <plugin>
         <artifactId>maven-scm-plugin</artifactId>
+        <version>${maven.scm.version}</version>
         <configuration>
           <connectionType>developerConnection</connectionType>
         </configuration>
@@ -146,6 +148,7 @@
       </plugin>
     </plugins>
   </build>
+  
   <dependencies>
     <!-- -->
     <!-- START: ATG Jars -->
@@ -280,26 +283,32 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>emma-maven-plugin</artifactId>
+        <version>${maven.emma.version}</version>
       </plugin>
       <!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>cobertura-maven-plugin</artifactId> </plugin> -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>surefire-report-maven-plugin</artifactId>
+        <version>${maven.surefire-report.version}</version>
         <inherited>true</inherited>
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.version}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jxr-maven-plugin</artifactId>
+        <version>${maven.jxr.version}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
+        <version>${maven.taglist.version}</version>
       </plugin>
       <plugin>
         <artifactId>maven-pmd-plugin</artifactId>
+        <version>${maven.pmd.version}</version>
         <configuration>
           <targetJdk>1.7</targetJdk>
           <rulesets>
@@ -315,6 +324,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${maven.findbugs.version}</version>
         <configuration>
           <threshold>Normal</threshold>
           <effort>Max</effort>
@@ -324,6 +334,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>changelog-maven-plugin</artifactId>
+        <version>${maven.changelog.version}</version>
         <configuration>
           <type>range</type>
           <range>30</range>
@@ -367,7 +378,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
+            <version>${maven.gpg.plugin}</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -381,7 +392,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>2.2.1</version>
+            <version>${maven.source.plugin}</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -394,7 +405,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9.1</version>
+            <version>${maven.javadoc.version}</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
