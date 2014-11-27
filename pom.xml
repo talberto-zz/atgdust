@@ -3,7 +3,7 @@
   <groupId>com.github.talberto</groupId>
   <artifactId>atgdust</artifactId>
   <name>ATG DUST</name>
-  <version>2.1.0-SNAPSHOT</version>
+  <version>2.1.0</version>
   <description> ATG DUST is a framework for building JUnit tests for
     applications built on the ATG Dynamo platform. This framework allows
     one to quickly write test code that depends up Nucleus or ATG
@@ -62,6 +62,7 @@
     <connection>scm:git:git@github.com:talberto/atgdust.git</connection>
     <developerConnection>scm:git:git@github.com:talberto/atgdust.git</developerConnection>
     <url>git@github.com:talberto/atgdust.git</url>
+    <tag>2.1.0</tag>
   </scm>
 
   <properties>
